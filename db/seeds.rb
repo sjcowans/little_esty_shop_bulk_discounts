@@ -1,3 +1,11 @@
+BulkDiscount.destroy_all
+InvoiceItem.destroy_all
+Transaction.destroy_all
+Invoice.destroy_all
+Customer.destroy_all
+Item.destroy_all
+Merchant.destroy_all
+
 @merchant1 = Merchant.create!(name: 'Hair Care')
 @merchant2 = Merchant.create!(name: 'Jewelry')
 
@@ -47,3 +55,9 @@
 @transaction6 = Transaction.create!(credit_card_number: 879799, result: 0, invoice_id: @invoice_6.id)
 @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_7.id)
 @transaction8 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_8.id)
+
+@bulk_discount_1 = @merchant1.bulk_discounts.create!(percent_discount: 20.0, quantity_threshold: 10)
+@bulk_discount_2 = @merchant1.bulk_discounts.create!(percent_discount: 30.0, quantity_threshold: 50)
+@bulk_discount_3 = @merchant1.bulk_discounts.create!(percent_discount: 50.0, quantity_threshold: 100)
+@bulk_discount_4 = @merchant2.bulk_discounts.create!(percent_discount: 20.0, quantity_threshold: 10)
+@bulk_discount_5 = @merchant2.bulk_discounts.create!(percent_discount: 25.0, quantity_threshold: 20)
