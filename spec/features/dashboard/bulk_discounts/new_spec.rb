@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'merchant bulk discounts index' do
+RSpec.describe 'new merchant bulk discounts' do
   before :each do
     @merchant1 = Merchant.create!(name: 'Hair Care')
     @merchant2 = Merchant.create!(name: 'Jewelry')
@@ -45,44 +45,42 @@ RSpec.describe 'merchant bulk discounts index' do
     @bulk_discount_2 = @merchant1.bulk_discounts.create!(percent_discount: 30.0, quantity_threshold: 50)
     @bulk_discount_3 = @merchant1.bulk_discounts.create!(percent_discount: 50.0, quantity_threshold: 100)
     @bulk_discount_4 = @merchant2.bulk_discounts.create!(percent_discount: 20.0, quantity_threshold: 10)
-
-    visit "merchant/#{@merchant1.id}/bulk_discounts"
   end
+    
+  it 'can validate form and display errors' do
+    visit new_merchant_bulk_discount_path(@merchant1)
 
-  it 'lists merchants with attributes' do 
-    within "#bulk-discount-#{@bulk_discount_1.id}" do
-      expect(page).to have_link("Bulk Discount #{@bulk_discount_1.id}")
-      expect(page).to have_content(@bulk_discount_1.percent_discount)
-      expect(page).to have_content(@bulk_discount_1.quantity_threshold)
-    end
-      within "#bulk-discount-#{@bulk_discount_2.id}" do
-      expect(page).to have_link("Bulk Discount #{@bulk_discount_2.id}")
-      expect(page).to have_content(@bulk_discount_2.percent_discount)
-      expect(page).to have_content(@bulk_discount_2.quantity_threshold)
-    end
-    within "#bulk-discount-#{@bulk_discount_3.id}" do
-      expect(page).to have_link("Bulk Discount #{@bulk_discount_3.id}")
-      expect(page).to have_content(@bulk_discount_3.percent_discount)
-      expect(page).to have_content(@bulk_discount_3.quantity_threshold)
-    end
-    expect(page).to have_no_content("Bulk Discount #{@bulk_discount_4.id}")
-  end
+    fill_in :percent_discount, with: 'A'
+    fill_in :quantity_threshold, with: '10.5'
 
-  it 'redirects to correct page with discount links' do
-    click_link "Bulk Discount #{@bulk_discount_1.id}"
-    expect(current_path).to eq("/merchant/#{@merchant1.id}/bulk_discounts/#{@bulk_discount_1.id}")
-    visit "merchant/#{@merchant1.id}/bulk_discounts"
-    click_link "Bulk Discount #{@bulk_discount_2.id}"
-    expect(current_path).to eq("/merchant/#{@merchant1.id}/bulk_discounts/#{@bulk_discount_2.id}")
-    visit "merchant/#{@merchant1.id}/bulk_discounts"
-    click_link "Bulk Discount #{@bulk_discount_3.id}"
-    expect(current_path).to eq("/merchant/#{@merchant1.id}/bulk_discounts/#{@bulk_discount_3.id}")
-    visit "merchant/#{@merchant1.id}/bulk_discounts"
-  end
+    click_button 'Save'
 
-  it 'has link to create new discount' do
-    expect(page).to have_link "Create New Discount"
-    click_link "Create New Discount"
     expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant1))
+
+    within '#flash_message' do
+      expect(page).to have_content("Error: Percent discount is not a number, Quantity threshold must be an integer")
+    end
+  end
+
+  it 'can fill out form and create a new discount' do
+    visit merchant_bulk_discounts_path(@merchant1)
+
+    expect(page).to have_no_content("Discount: 10.5")
+    expect(page).to have_no_content("Required quantity: 11")
+
+    visit new_merchant_bulk_discount_path(@merchant1)
+
+    fill_in :percent_discount, with: '10.5'
+    fill_in :quantity_threshold, with: '11'
+
+    click_button 'Save'
+
+    expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1))
+
+    within '#flash_message' do
+      expect(page).to have_content("Discount created successfully!")
+    end
+    expect(page).to have_content("Discount: 10.5")
+    expect(page).to have_content("Required quantity: 11")
   end
 end

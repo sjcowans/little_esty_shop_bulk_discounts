@@ -1,0 +1,10 @@
+<div class='nav-container'>
+  <nav class='navbar navbar-expand-lg navbar-light bg-light'>
+    <p class='navbar-text'>Merchant Dashboard</p>
+    <ul class='nav navbar-nav'>
+      <li><%= link_to 'Dashboard', merchant_dashboard_index_path, style: 'pull-right' %>
+    </ul>
+  </nav>
+</div>
+
+  <%= render partial: 'form', locals: { method: :post, url: merchant_bulk_discounts_path, class: 'merchant_bulk_discount_form', local: true}%>

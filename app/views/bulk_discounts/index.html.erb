@@ -5,3 +5,5 @@
   <p> Discount: <%= discount.percent_discount %>%, Required quantity: <%= discount.quantity_threshold %> </p>
   </div>
 <% end %>
+
+<%= link_to "Create New Discount", new_merchant_bulk_discount_path(@merchant) %>
