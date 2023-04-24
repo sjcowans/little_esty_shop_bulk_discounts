@@ -1,7 +1,7 @@
 <h3><%=@merchant.name%> Bulk Discounts:</h3>
 <% @bulk_discounts.each do |discount| %>
-  <div id="bulk-discount-<%= discount.id %>"
-  <p> <%= link_to "Bulk Discount #{discount.id}", merchant_bulk_discount_path(@merchant, discount) %> </p>
+  <div id="bulk-discount-<%= discount.id %>">
+  <p> <%= link_to "Bulk Discount #{discount.id}", merchant_bulk_discount_path(@merchant, discount) %> <%= link_to "Delete Discount", merchant_bulk_discount_path(@merchant, discount), :data => {:confirm => 'Are you sure?'}, method: :delete %> </p>
   <p> Discount: <%= discount.percent_discount %>%, Required quantity: <%= discount.quantity_threshold %> </p>
   </div>
 <% end %>

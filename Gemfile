@@ -44,6 +44,8 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'simplecov'
   gem 'net-http'
+  gem 'jquery-rails'
+  gem 'turbolinks'
 end
 
 group :development do
