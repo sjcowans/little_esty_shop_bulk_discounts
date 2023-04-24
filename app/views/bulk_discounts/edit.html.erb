@@ -9,7 +9,4 @@
   </nav>
 </div>
 
-
-<h3> Bulk Discount <%= @bulk_discount.id %> </h3>
-<p> Discount: <%= @bulk_discount.percent_discount %>, Required quantity: <%= @bulk_discount.quantity_threshold %> </p>
-<%= link_to 'Update Bulk Discount', edit_merchant_bulk_discount_path(@bulk_discount.merchant, @bulk_discount) %>
+<%= render partial: 'form', locals: { method: :patch, url: merchant_bulk_discount_path(@bulk_discount.merchant, @bulk_discount), class: 'merchant_bulk_discount_form', local: true, model: @bulk_discount} %>

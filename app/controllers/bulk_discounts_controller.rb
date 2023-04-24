@@ -21,7 +21,7 @@ class BulkDiscountsController < ApplicationController
 
   def create
     @merchant = Merchant.find(params[:merchant_id])
-    bulk_discount = BulkDiscount.new(discount_params)
+    bulk_discount = BulkDiscount.new(new_discount_params)
     if bulk_discount.save
       redirect_to merchant_bulk_discounts_path
       flash[:alert] = "Discount created successfully!"
@@ -31,9 +31,30 @@ class BulkDiscountsController < ApplicationController
     end
   end
 
+  def edit
+    @merchant = Merchant.find(params[:merchant_id])
+    @bulk_discount = BulkDiscount.find(params[:id])
+  end
+
+  def update
+    @merchant = Merchant.find(params[:merchant_id])
+    @bulk_discount = BulkDiscount.find(params[:id])
+    if @bulk_discount.update(update_discount_params)
+      redirect_to merchant_bulk_discount_path(@merchant, @bulk_discount)
+      flash[:alert] = "Discount updated successfully!"
+    else
+      redirect_to edit_merchant_bulk_discount_path(@merchant, @bulk_discount)
+      flash[:alert] = "Error: #{error_message(@bulk_discount.errors)}"
+    end
+  end
+
   private
 
-  def discount_params
+  def update_discount_params
+    params.require(:bulk_discount).permit(:id, :percent_discount, :quantity_threshold, :merchant_id)
+  end
+
+  def new_discount_params
     params.permit(:id, :percent_discount, :quantity_threshold, :merchant_id)
   end
 end
