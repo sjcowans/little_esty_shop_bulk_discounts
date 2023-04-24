@@ -1,0 +1,13 @@
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <p class="navbar-text"><%= @bulk_discount.merchant.name %></p>
+    <ul class="nav navbar-nav">
+      <li><%= link_to 'Dashboard', merchant_dashboard_index_path, style: 'pull-right' %></li>
+      <li><%= link_to 'My Items', merchant_items_path(@bulk_discount.merchant), style: 'pull-right' %></li>
+      <li><%= link_to 'My Invoices', merchant_invoices_path(@bulk_discount.merchant), style: 'pull-right' %></li>
+    </ul>
+  </nav>
+</div>
+
+
+<h3> Bulk Discount <%= @bulk_discount.id %> </h3>
+<p> Discount: <%= @bulk_discount.percent_discount %>%, Required quantity: <%= @bulk_discount.quantity_threshold %> </p>
