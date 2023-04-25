@@ -100,4 +100,25 @@ RSpec.describe 'invoices show' do
      end
   end
 
+  it 'shows discounted total revenue' do
+    @bulk_discount_1 = @merchant1.bulk_discounts.create!(percent_discount: 20.0, quantity_threshold: 10)
+    @bulk_discount_2 = @merchant1.bulk_discounts.create!(percent_discount: 30.0, quantity_threshold: 50)
+    @bulk_discount_3 = @merchant1.bulk_discounts.create!(percent_discount: 50.0, quantity_threshold: 100)
+    @bulk_discount_4 = @merchant2.bulk_discounts.create!(percent_discount: 20.0, quantity_threshold: 10)
+    @bulk_discount_5 = @merchant2.bulk_discounts.create!(percent_discount: 25.0, quantity_threshold: 20)
+    
+    visit merchant_invoice_path(@merchant1, @invoice_1)
+
+    expect(page).to have_content("Discounted Revenue: $147.6")
+  end
+
+  it 'uses highest discount' do
+    @bulk_discount_1 = @merchant1.bulk_discounts.create!(percent_discount: 20.0, quantity_threshold: 10)
+    @bulk_discount_2 = @merchant1.bulk_discounts.create!(percent_discount: 50.0, quantity_threshold: 11)
+
+    visit merchant_invoice_path(@merchant1, @invoice_1)
+
+    expect(page).to have_content("Discounted Revenue: $126.0")
+  end
+
 end
