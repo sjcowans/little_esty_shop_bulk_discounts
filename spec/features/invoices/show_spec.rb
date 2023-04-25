@@ -121,4 +121,19 @@ RSpec.describe 'invoices show' do
     expect(page).to have_content("Discounted Revenue: $126.0")
   end
 
+  it 'shows discount when applicabale' do
+    @bulk_discount_1 = @merchant1.bulk_discounts.create!(percent_discount: 20.0, quantity_threshold: 10)
+    @bulk_discount_2 = @merchant1.bulk_discounts.create!(percent_discount: 50.0, quantity_threshold: 11)
+
+    visit merchant_invoice_path(@merchant1, @invoice_1)
+    within("#the-status-#{@ii_1.id}") do
+      expect(page).to have_content("Discount: None")
+    end
+    within("#the-status-#{@ii_11.id}") do
+      expect(page).to have_content("Discount: 50.0% Discount")
+      click_link "50.0% Discount"
+      expect(current_path).to eq(merchant_bulk_discount_path(@merchant1, @bulk_discount_2))
+    end
+  end
+
 end
