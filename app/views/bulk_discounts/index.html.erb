@@ -1,3 +1,10 @@
+<h3>Upcoming Holidays:</h3>
+<header>
+<% @holidays.holidays_info.each do |holiday| %>
+<%= holiday[:name] %>, <%= holiday[:date]%>
+<% end %>
+</header><br>
+ 
  <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <p class="navbar-text"><%= @merchant.name %></p>
     <ul class="nav navbar-nav">

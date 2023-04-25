@@ -46,6 +46,7 @@ group :development, :test do
   gem 'net-http'
   gem 'jquery-rails'
   gem 'turbolinks'
+  gem 'httparty'
 end
 
 group :development do

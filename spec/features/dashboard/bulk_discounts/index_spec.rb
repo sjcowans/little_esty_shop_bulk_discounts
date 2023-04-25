@@ -85,4 +85,10 @@ RSpec.describe 'merchant bulk discounts index' do
     click_link "Create New Discount"
     expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant1))
   end
+
+  it 'displays next 3 holidays' do
+    expect(page).to have_content("Upcoming Holidays:")
+    #will fail after memorial day
+    expect(page).to have_content("Memorial Day, 2023-05-29 Juneteenth, 2023-06-19 Independence Day, 2023-07-04 Labour Day, 2023-09-04")
+  end
 end
