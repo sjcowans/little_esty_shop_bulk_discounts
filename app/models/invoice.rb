@@ -22,6 +22,6 @@ class Invoice < ApplicationRecord
     .group(:id)
     .sum(&:discounts)
 
-    total_revenue - total_invoice_discount
+    total_revenue - total_invoice_discount.round(2)
   end
 end
